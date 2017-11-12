@@ -8,14 +8,28 @@
 
 namespace manager_api {
 
+enum Message {killPublisher, killSubsriber, rosTime};
+static const std::string EnumStrings[] = { "killPublisher", "killSubsriber", "rosTime" };
+
+const std::string getTextForEnum( int enumVal )
+{
+  return EnumStrings[enumVal];
+}
+
+const Message getEnumForText( std::string text )
+{
+  int index = std::distance(EnumStrings, std::find(EnumStrings, EnumStrings + sizeof(EnumStrings), text));
+  Message msg = static_cast<Message>(index);
+  return msg;
+}
+
+
 class AlertManagement
 {
 public:
     AlertManagement(const std::string& ids_module):
                     ids_module_name_(ids_module)
-    {
-
-    };
+    {};
 
 
     void initPublisher(ros::NodeHandle n)
@@ -51,6 +65,9 @@ Possible levels of operations
     byte WARN=1
     byte ERROR=2
     byte STALE=3
+
+
+
 */
 
     void warn(const std::string& msg)
@@ -59,10 +76,11 @@ Possible levels of operations
     };
 
     void error(const std::string& msg, 
-                const std::string& key = "rosTime",
+                Message key = rosTime,
                 const std::string& value = std::to_string(ros::Time::now().toSec()))
     {
-        sendDiagnosticMsg(msg, 2, key, value);
+        int n = static_cast<int>(key);
+        sendDiagnosticMsg(msg, 2, getTextForEnum(n), value);
     };
 
     void ok(const std::string& msg)
@@ -75,7 +93,6 @@ private:
     ros::Publisher diagnostic_pub_;
     std::string ids_module_name_;
 };
-
 
 }; /* namespace */
 
