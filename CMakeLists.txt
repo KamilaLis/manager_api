@@ -3,16 +3,24 @@ project(manager_api)
 
 add_definitions(-std=c++11)
 
-find_package(catkin REQUIRED)
-
-catkin_package(
-        INCLUDE_DIRS include
+find_package(catkin REQUIRED COMPONENTS
+	roscpp
+	std_msgs
+	message_generation
+        diagnostic_msgs
 )
 
-###########
-## Build ##
-###########
+add_service_files(DIRECTORY srv
+        FILES
+        Manager.srv
+)
 
-include_directories(
-        include
+generate_messages(DEPENDENCIES
+	std_msgs
+	diagnostic_msgs
+)
+
+catkin_package(CATKIN_DEPENDS 
+        message_runtime
+        INCLUDE_DIRS include
 )

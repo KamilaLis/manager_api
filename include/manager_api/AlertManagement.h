@@ -37,7 +37,6 @@ public:
         diagnostic_pub_ = n.advertise<diagnostic_msgs::DiagnosticStatus>("info", 1);
     }
 
-
     // diagnostics
     void sendDiagnosticMsg(const std::string& msg, 
                             int level,
@@ -59,16 +58,13 @@ public:
         diagnostic_pub_.publish(message);
     };
 
-/*
-Possible levels of operations
-    byte OK=0
-    byte WARN=1
-    byte ERROR=2
-    byte STALE=3
-
-
-
-*/
+/* ===============================================
+        Possible levels of operations
+            byte OK=0
+            byte WARN=1
+            byte ERROR=2
+            byte STALE=3
+  ================================================  */
 
     void warn(const std::string& msg)
     {

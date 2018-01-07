@@ -1,0 +1,3 @@
+diagnostic_msgs/DiagnosticStatus status
+---
+bool done
